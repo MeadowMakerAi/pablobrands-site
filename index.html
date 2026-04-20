@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PABLO — Three Worlds. One Name.</title>
+    <meta name="description" content="Pablo is a multi-category brand built on fresh-frozen extraction. Hemp. New York adult-use cannabis. Lifestyle.">
+    <meta property="og:title" content="PABLO — Three Worlds. One Name.">
+    <meta property="og:description" content="Hemp. NY Adult Use. Lifestyle. One standard across every category.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#0047BB">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #0047BB;
+            --blue-deep: #001A4D;
+            --blue-mid: #003399;
+            --yellow: #FDDA00;
+            --white: #FFFFFF;
+            --dark: #0A0A0A;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            background: var(--blue);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── NAV ── */
+        .nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: background 0.4s ease, padding 0.3s ease, box-shadow 0.4s ease;
+        }
+        .nav--scrolled {
+            background: rgba(0, 71, 187, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 3rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav__logo-img { height: 42px; width: auto; }
+        .nav__links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav__link {
+            font-size: 1.4rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--white); text-decoration: none;
+            transition: color 0.3s ease; position: relative;
+        }
+        .nav__link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--yellow);
+            transition: width 0.3s var(--ease);
+        }
+        .nav__link:hover { color: var(--yellow); }
+        .nav__link:hover::after { width: 100%; }
+
+        /* Mobile menu */
+        .nav__menu {
+            display: none; flex-direction: column; gap: 6px;
+            background: none; border: none; cursor: pointer;
+            padding: 10px; min-width: 44px; min-height: 44px;
+            justify-content: center; align-items: center;
+        }
+        .nav__menu span {
+            display: block; width: 28px; height: 2px;
+            background: var(--white); transition: all 0.3s;
+        }
+        .nav__menu--open span:first-child { transform: rotate(45deg) translate(3px, 3px); }
+        .nav__menu--open span:last-child { transform: rotate(-45deg) translate(3px, -3px); }
+        .mobile-menu {
+            display: none; position: fixed; inset: 0; z-index: 99;
+            background: var(--blue);
+            flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+        }
+        .mobile-menu--open { display: flex; }
+        .mobile-menu a {
+            font-size: 2.5rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--white); text-decoration: none; transition: color 0.3s;
+        }
+        .mobile-menu a:hover { color: var(--yellow); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            position: relative; overflow: hidden;
+            background: var(--blue);
+            padding: 6rem 3rem 3rem;
+        }
+        .hero__logo-img {
+            max-width: 420px; width: 70vw; height: auto;
+            margin-bottom: 2rem;
+            opacity: 0; transform: scale(0.85);
+            animation: logoIn 1.4s var(--ease) 0.2s forwards;
+        }
+        .hero__tagline {
+            font-size: clamp(3rem, 7vw, 6rem); line-height: 0.95;
+            letter-spacing: 0.03em;
+        }
+        .hero__tagline .line {
+            display: block;
+            opacity: 0; transform: translateY(70px) skewY(2deg);
+        }
+        .hero__tagline .line:nth-child(1) { animation: textIn 1s var(--ease) 0.7s forwards; }
+        .hero__tagline .line:nth-child(2) { animation: textIn 1s var(--ease) 0.9s forwards; color: var(--yellow); }
+        .hero__sub {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); margin-top: 2rem;
+            opacity: 0; transform: translateY(25px);
+            animation: fadeUp 0.8s var(--ease) 1.3s forwards;
+        }
+        .hero__scroll {
+            position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+            opacity: 0; animation: fadeUp 0.6s var(--ease) 1.8s forwards;
+        }
+        .hero__scroll-label {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+        }
+        .hero__scroll-line {
+            width: 1px; height: 44px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+            animation: pulse 2.4s ease-in-out infinite;
+        }
+
+        /* ── RAINBOW BAR ── */
+        .rainbow {
+            height: 6px; width: 100%;
+            background: linear-gradient(90deg,
+                #189849 0%, #FDAA00 16%, #FCA311 28%,
+                #FDB829 38%, #EE3680 52%, #E80029 66%,
+                #81288E 82%, #0047BB 100%
+            );
+        }
+
+        /* ── GATEWAY TRIPTYCH ── */
+        .gateway {
+            display: flex; gap: 4px; padding: 4px;
+            min-height: 100vh; width: 100%;
+            background: var(--white);
+        }
+        .gateway__panel {
+            flex: 1; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 4.5rem 3rem;
+            cursor: pointer; text-decoration: none; color: var(--white);
+            transition: flex 0.7s var(--ease), box-shadow 0.5s ease;
+        }
+        .gateway:hover .gateway__panel { flex: 0.7; }
+        .gateway__panel:hover {
+            flex: 1.6;
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .gateway__panel--hemp {
+            background: linear-gradient(160deg, #22C55E 0%, #189849 40%, #0D5C2E 100%);
+        }
+        .gateway__panel--ny {
+            background: linear-gradient(160deg, #2979FF 0%, var(--blue) 40%, var(--blue-deep) 100%);
+        }
+        .gateway__panel--lifestyle {
+            background: linear-gradient(160deg, #EE3680 0%, #B02DA0 35%, #81288E 70%, #4A1560 100%);
+        }
+
+        /* Shimmer highlight on hover */
+        .gateway__panel::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+            opacity: 0; transition: opacity 0.7s ease;
+        }
+        .gateway__panel:hover::before { opacity: 1; }
+
+        /* Watermark */
+        .gateway__watermark {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            font-size: clamp(8rem, 18vw, 20rem); letter-spacing: 0.08em;
+            white-space: nowrap; color: rgba(255,255,255,0.04);
+            pointer-events: none; z-index: 1;
+            transition: color 0.7s ease, letter-spacing 0.7s var(--ease);
+        }
+        .gateway__panel:hover .gateway__watermark {
+            color: rgba(255,255,255,0.08);
+            letter-spacing: 0.12em;
+        }
+
+        /* Content */
+        .gateway__content { position: relative; z-index: 2; }
+        .gateway__label {
+            font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+        }
+        .gateway__title {
+            font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 0.95;
+            letter-spacing: 0.02em; margin-bottom: 0.8rem;
+            transition: transform 0.5s var(--ease);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+        }
+        .gateway__panel:hover .gateway__title {
+            transform: translateX(6px);
+        }
+        .gateway__desc {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.95rem; line-height: 1.65; color: rgba(255,255,255,0.7);
+            max-width: 300px;
+            opacity: 0; max-height: 0; overflow: hidden;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease 0.12s, transform 0.5s var(--ease) 0.12s, max-height 0.5s ease;
+        }
+        .gateway__panel:hover .gateway__desc {
+            opacity: 1; transform: translateY(0); max-height: 200px;
+        }
+        .gateway__cta {
+            display: inline-block; margin-top: 1.2rem;
+            font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 0.7rem 2rem; border: 2px solid rgba(255,255,255,0.4);
+            color: var(--white); background: transparent;
+            opacity: 0; transform: translateY(10px);
+            transition: opacity 0.5s ease 0.22s, transform 0.5s var(--ease) 0.22s,
+                        background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        .gateway__panel:hover .gateway__cta { opacity: 1; transform: translateY(0); }
+        .gateway__cta:hover {
+            background: var(--yellow); border-color: var(--yellow); color: var(--blue);
+        }
+
+        /* Panel number */
+        .gateway__num {
+            position: absolute; top: 3rem; left: 3rem;
+            font-size: 0.7rem; letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.2); z-index: 2;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            transition: color 0.5s ease;
+        }
+        .gateway__panel:hover .gateway__num { color: rgba(255,255,255,0.4); }
+
+        /* ── MARQUEE ── */
+        .marquee {
+            background: var(--yellow); padding: 1.2rem 0; overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee__track {
+            display: inline-flex; gap: 3rem;
+            animation: scroll 12s linear infinite;
+        }
+        .marquee__track span {
+            font-size: 1.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--blue); font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        .marquee__track span:hover { transform: scale(1.1); }
+
+        /* ── FLAVORS RAINBOW ── */
+        .flavors {
+            background: var(--white); padding: 6rem 3rem 2rem;
+            text-align: center;
+        }
+        .flavors__label {
+            font-size: 0.9rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--blue); margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+        }
+        .flavors__heading {
+            font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.95;
+            text-transform: uppercase; letter-spacing: 0.02em; color: var(--blue);
+        }
+        .flavors__heading .text--yellow { color: var(--yellow); }
+        .flavors-stack {
+            display: flex; flex-direction: column; gap: 0;
+            margin-top: 3rem; overflow: hidden;
+        }
+        .flavor-band {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.4rem 2.5rem; cursor: default;
+            opacity: 0; transform: translateX(-100%);
+            transition: transform 0.9s var(--ease), opacity 0.6s ease;
+            position: relative; overflow: hidden;
+        }
+        .flavor-band.visible { opacity: 1; transform: translateX(0); }
+        .flavor-band:hover { filter: brightness(1.08); }
+        .flavor-band:nth-child(1) { transition-delay: 0.05s; }
+        .flavor-band:nth-child(2) { transition-delay: 0.12s; }
+        .flavor-band:nth-child(3) { transition-delay: 0.19s; }
+        .flavor-band:nth-child(4) { transition-delay: 0.26s; }
+        .flavor-band:nth-child(5) { transition-delay: 0.33s; }
+        .flavor-band:nth-child(6) { transition-delay: 0.4s; }
+        .flavor-band:nth-child(7) { transition-delay: 0.47s; }
+        .flavor-band--pineapple-marker {
+            background: linear-gradient(135deg, #EE3680 0%, #F06AAA 50%, #EE3680 100%); color: #fff;
+        }
+        .flavor-band--sunday-grape {
+            background: linear-gradient(135deg, #81288E 0%, #A04DB0 50%, #81288E 100%); color: #fff;
+        }
+        .flavor-band--terp-taxi { background: #FDAA00; color: var(--blue); }
+        .flavor-band--terp-taxi::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+            background: repeating-linear-gradient(90deg, var(--blue) 0px, var(--blue) 10px, #FDAA00 10px, #FDAA00 20px);
+        }
+        .flavor-band--mangonada {
+            background: linear-gradient(135deg, #FDB829 0%, #FF9933 50%, #FDB829 100%); color: #fff;
+        }
+        .flavor-band--marmalade {
+            background: linear-gradient(135deg, #FCA311 0%, #FFCC55 50%, #FCA311 100%); color: #8B4513;
+        }
+        .flavor-band--watermelon-gusher {
+            background: linear-gradient(135deg, #E80029 0%, #FF3355 50%, #E80029 100%); color: #fff;
+        }
+        .flavor-band--pie-face {
+            background: linear-gradient(135deg, #189849 0%, #22C060 50%, #189849 100%); color: #fff;
+        }
+        .flavor-band__name {
+            font-size: clamp(1.6rem, 3vw, 2.8rem); letter-spacing: 0.08em;
+            text-transform: uppercase; font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .flavor-band__type {
+            font-size: clamp(0.7rem, 1vw, 0.8rem); letter-spacing: 0.2em;
+            text-transform: uppercase; font-weight: 700; opacity: 0.8;
+        }
+        @media (max-width: 768px) { .flavor-band { padding: 1.2rem 1.5rem; } }
+
+        /* ── THE STANDARD ── */
+        .standard {
+            padding: 6rem 3rem; text-align: center;
+            background: var(--white); color: var(--blue);
+        }
+        .standard__label {
+            font-size: 0.9rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--blue); margin-bottom: 1rem;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            opacity: 0; transform: translateY(30px);
+        }
+        .standard__label.visible {
+            opacity: 1; transform: translateY(0);
+            transition: all 0.8s var(--ease);
+        }
+        .standard__text {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.8;
+            max-width: 640px; margin: 0 auto;
+            color: rgba(0, 26, 77, 0.55);
+            opacity: 0; transform: translateY(40px);
+        }
+        .standard__text.visible {
+            opacity: 1; transform: translateY(0);
+            transition: all 1s var(--ease) 0.15s;
+        }
+
+        /* ── FEATURES STRIP ── */
+        .features {
+            background: var(--yellow); padding: 4rem 3rem; color: var(--blue);
+        }
+        .features__grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 2rem; max-width: 1200px; margin: 0 auto; text-align: center;
+        }
+        .feature {
+            opacity: 0; transform: translateY(50px) scale(0.9);
+        }
+        .feature.visible {
+            opacity: 1; transform: translateY(0) scale(1);
+            transition: all 0.9s var(--ease);
+        }
+        .feature:nth-child(1) { transition-delay: 0s; }
+        .feature:nth-child(2) { transition-delay: 0.12s; }
+        .feature:nth-child(3) { transition-delay: 0.24s; }
+        .feature:nth-child(4) { transition-delay: 0.36s; }
+        .feature h3 {
+            font-size: 1.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .feature p {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; line-height: 1.6;
+        }
+
+        /* ── CONTACT ── */
+        .contact {
+            background: var(--blue); padding: 5rem 3rem; text-align: center;
+        }
+        .contact__label {
+            font-size: 0.9rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--yellow); margin-bottom: 0.5rem;
+            opacity: 0; transform: translateY(20px);
+        }
+        .contact__label.visible {
+            opacity: 1; transform: translateY(0);
+            transition: all 0.8s var(--ease);
+        }
+        .contact__heading {
+            font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95;
+            text-transform: uppercase; letter-spacing: 0.02em;
+            margin-bottom: 2rem;
+            opacity: 0; transform: translateY(40px) skewY(2deg);
+        }
+        .contact__heading.visible {
+            opacity: 1; transform: translateY(0) skewY(0);
+            transition: all 1s var(--ease) 0.1s;
+        }
+        .contact__heading .text--yellow { color: var(--yellow); }
+        .contact__body {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 1.2rem; line-height: 1.7; max-width: 500px; margin: 0 auto 2rem;
+            color: rgba(255,255,255,0.7);
+            opacity: 0; transform: translateY(30px);
+        }
+        .contact__body.visible {
+            opacity: 1; transform: translateY(0);
+            transition: all 0.8s var(--ease) 0.25s;
+        }
+        .contact__btn {
+            display: inline-block;
+            padding: 0.8rem 2.5rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem; letter-spacing: 0.15em; text-transform: uppercase;
+            background: var(--yellow); color: var(--blue);
+            border: none; text-decoration: none; cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0; transform: translateY(20px);
+        }
+        .contact__btn.visible {
+            opacity: 1; transform: translateY(0);
+            transition: all 0.8s var(--ease) 0.35s, background 0.3s ease, color 0.3s ease;
+        }
+        .contact__btn:hover { background: var(--white); }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: var(--blue-deep); padding: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer__inner {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem; align-items: start;
+        }
+        .footer__brand {}
+        .footer__logo-text {
+            font-size: 2rem; letter-spacing: 0.1em; font-weight: 700;
+        }
+        .footer__tagline {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem;
+            letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.4;
+            margin-top: 0.3rem;
+        }
+        .footer__links {
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .footer__links a {
+            font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--white); text-decoration: none; opacity: 0.5;
+            transition: opacity 0.3s, color 0.3s;
+        }
+        .footer__links a:hover { opacity: 1; color: var(--yellow); }
+        .footer__legal { text-align: right; }
+        .footer__legal p {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem;
+            line-height: 1.8; letter-spacing: 0.05em; opacity: 0.35;
+        }
+
+        /* ── KEYFRAMES ── */
+        @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
+        @keyframes textIn { to { opacity: 1; transform: translateY(0) skewY(0); } }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 0.8; transform: scaleY(1.1); }
+        }
+        @keyframes scroll { to { transform: translateX(-50%); } }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .nav__links { display: none; }
+            .nav__menu { display: flex; }
+            .features__grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 968px) {
+            .nav { padding: 1.2rem 2rem; }
+            .nav--scrolled { padding: 1rem 2rem; }
+            .gateway { flex-direction: column; min-height: auto; }
+            .gateway__panel { min-height: 40vh; padding: 3rem 2rem; }
+            .gateway:hover .gateway__panel { flex: 1; }
+            .gateway__panel:hover { flex: 1.3; }
+            .gateway__panel + .gateway__panel {
+                border-left: none;
+            }
+            .gateway__watermark { font-size: 18vw; transform: translate(-50%, -50%); }
+            .gateway__desc { opacity: 1; max-height: 200px; transform: none; }
+            .gateway__cta { opacity: 1; transform: none; }
+            .gateway__num { top: 2rem; left: 2rem; }
+            .footer__inner { grid-template-columns: 1fr; text-align: center; }
+            .footer__links { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+            .footer__legal { text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding: 5.5rem 1.5rem 2.5rem; }
+            .hero__logo-img { max-width: 280px; }
+            .hero__tagline { font-size: 2.8rem; }
+            .hero__sub { font-size: 0.75rem; letter-spacing: 0.15em; }
+            .gateway__panel { min-height: 35vh; padding: 2.5rem 1.5rem; }
+            .gateway__title { font-size: 2.5rem; }
+            .standard { padding: 4rem 1.5rem; }
+            .features { padding: 3rem 1.5rem; }
+            .features__grid { grid-template-columns: 1fr; }
+            .contact { padding: 4rem 1.5rem; }
+            .footer { padding: 2rem 1.5rem; }
+        }
+
+        /* ── AGE GATE ── */
+        .age-gate {
+            position: fixed; inset: 0; z-index: 10000;
+            background: var(--blue);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 2rem;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .age-gate--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .age-gate__logo { max-width: 220px; width: 50vw; margin-bottom: 2rem; }
+        .age-gate__heading {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 0.03em; margin-bottom: 0.6rem;
+        }
+        .age-gate__sub {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.85rem; color: rgba(255,255,255,0.45);
+            line-height: 1.6; max-width: 340px; margin-bottom: 2rem;
+        }
+        .age-gate__buttons { display: flex; gap: 1rem; }
+        .age-gate__btn {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem; letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 0.8rem 2.8rem; border: none; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .age-gate__btn--yes {
+            background: var(--yellow); color: var(--blue);
+        }
+        .age-gate__btn--yes:hover { background: var(--white); }
+        .age-gate__btn--no {
+            background: transparent; color: rgba(255,255,255,0.35);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .age-gate__btn--no:hover { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.25); }
+        .age-gate__legal {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.55rem; color: rgba(255,255,255,0.15);
+            margin-top: 2.5rem; letter-spacing: 0.04em; max-width: 320px;
+        }
+
+        /* ── JOIN THE CLUB POPUP ── */
+        .club {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 9000;
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 2.5rem 2.2rem 2rem;
+            max-width: 360px; width: calc(100vw - 3rem);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), visibility 0.5s ease;
+            visibility: hidden;
+        }
+        .club--visible { opacity: 1; transform: translateY(0); visibility: visible; }
+        .club--hidden { display: none; }
+        .club__close {
+            position: absolute; top: 0.8rem; right: 0.8rem;
+            background: none; border: none; cursor: pointer;
+            color: rgba(255,255,255,0.2); font-size: 1.2rem;
+            padding: 6px; line-height: 1;
+            transition: color 0.3s ease;
+        }
+        .club__close:hover { color: rgba(255,255,255,0.5); }
+        .club__rainbow {
+            height: 3px; width: 100%; margin-bottom: 1.5rem;
+            background: linear-gradient(90deg,
+                #189849 0%, #FDAA00 16%, #FCA311 28%, #FDB829 38%,
+                #EE3680 52%, #E80029 66%, #81288E 82%, #0047BB 100%
+            );
+        }
+        .club__heading {
+            font-size: 2rem; letter-spacing: 0.04em;
+            margin-bottom: 0.4rem;
+        }
+        .club__sub {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.75rem; color: rgba(255,255,255,0.35);
+            line-height: 1.6; margin-bottom: 1.2rem;
+        }
+        .club__form { display: flex; gap: 0; }
+        .club__input {
+            flex: 1; padding: 0.7rem 1rem;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.8rem; color: var(--white);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-right: none; outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .club__input::placeholder { color: rgba(255,255,255,0.2); }
+        .club__input:focus {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+        }
+        .club__submit {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase;
+            padding: 0.7rem 1.5rem;
+            background: var(--yellow); color: var(--blue);
+            border: 1px solid var(--yellow); cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .club__submit:hover { background: var(--white); }
+        .club__success {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.8rem; color: var(--yellow);
+            display: none; padding: 0.7rem 0;
+        }
+        .club__fine {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.5rem; color: rgba(255,255,255,0.12);
+            margin-top: 0.8rem; letter-spacing: 0.03em;
+        }
+
+        @media (max-width: 480px) {
+            .club { bottom: 0; right: 0; max-width: 100%; width: 100%; border-bottom: none; }
+        }
+
+        /* ── REDUCED MOTION ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .marquee__track { animation: none; }
+            .hero__tagline .line, .hero__logo-img, .hero__sub, .hero__scroll {
+                opacity: 1; transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Age Gate -->
+    <div class="age-gate" id="ageGate">
+        <img src="assets/images/pablo-logo.svg" alt="PABLO" class="age-gate__logo">
+        <h2 class="age-gate__heading">ARE YOU 21+?</h2>
+        <p class="age-gate__sub">Pablo sells products intended for adults. Please confirm your age to enter.</p>
+        <div class="age-gate__buttons">
+            <button class="age-gate__btn age-gate__btn--yes" id="ageYes">I'm 21+</button>
+            <button class="age-gate__btn age-gate__btn--no" id="ageNo">No</button>
+        </div>
+        <p class="age-gate__legal">By entering, you confirm you are at least 21 years of age.</p>
+    </div>
+
+    <!-- Join the Club Popup -->
+    <div class="club" id="clubPopup">
+        <button class="club__close" id="clubClose" aria-label="Close">&times;</button>
+        <div class="club__rainbow"></div>
+        <h3 class="club__heading">JOIN THE CLUB</h3>
+        <p class="club__sub">Drops, flavors, and access. No spam, no fluff — just Pablo.</p>
+        <form class="club__form" id="clubForm">
+            <input type="email" class="club__input" placeholder="your@email.com" required>
+            <button type="submit" class="club__submit">Join</button>
+        </form>
+        <p class="club__success" id="clubSuccess">You're in. Welcome to the club.</p>
+        <p class="club__fine">We'll never share your email. Unsubscribe anytime.</p>
+    </div>
+
+    <nav class="nav" id="nav">
+        <a href="#">
+            <img src="assets/images/pablo-logo.svg" alt="PABLO" class="nav__logo-img">
+        </a>
+        <div class="nav__links">
+            <a href="#gateway" class="nav__link">Brands</a>
+            <a href="#contact" class="nav__link">Contact</a>
+        </div>
+        <button class="nav__menu" id="menuBtn" aria-label="Menu">
+            <span></span><span></span>
+        </button>
+    </nav>
+
+    <div id="mobileMenu" class="mobile-menu">
+        <a href="#gateway">Brands</a>
+        <a href="#contact">Contact</a>
+        <a href="https://buypablo.com" target="_blank" rel="noopener">buypablo.com</a>
+    </div>
+
+    <section class="hero">
+        <img src="assets/images/pablo-logo.svg" alt="PABLO" class="hero__logo-img">
+        <h1 class="hero__tagline">
+            <span class="line">Three Worlds.</span>
+            <span class="line">One Name.</span>
+        </h1>
+        <p class="hero__sub">Hemp &middot; New York Adult Use &middot; Lifestyle</p>
+        <div class="hero__scroll">
+            <span class="hero__scroll-label">Explore</span>
+            <div class="hero__scroll-line"></div>
+        </div>
+    </section>
+
+    <div class="rainbow"></div>
+    <section class="gateway" id="gateway">
+        <a class="gateway__panel gateway__panel--hemp" href="#hemp">
+            <span class="gateway__num">01</span>
+            <div class="gateway__watermark">HEMP</div>
+            <div class="gateway__content">
+                <p class="gateway__label">Pablo Hemp</p>
+                <h2 class="gateway__title">HEMP</h2>
+                <p class="gateway__desc">Federally compliant, hemp-derived products. Fresh-frozen extraction, third-party tested, always legal under the 2018 Farm Bill.</p>
+                <span class="gateway__cta">Explore Hemp</span>
+            </div>
+        </a>
+
+        <a class="gateway__panel gateway__panel--ny" href="https://buypablo.com" target="_blank" rel="noopener">
+            <span class="gateway__num">02</span>
+            <div class="gateway__watermark">NY</div>
+            <div class="gateway__content">
+                <p class="gateway__label">Pablo NY</p>
+                <h2 class="gateway__title">NY ADULT USE</h2>
+                <p class="gateway__desc">Fresh-frozen live resin vapes for the New York market. All-glass ceramic hardware, NY-grown flower. For adults 21+.</p>
+                <span class="gateway__cta">Enter buypablo.com</span>
+            </div>
+        </a>
+
+        <a class="gateway__panel gateway__panel--lifestyle" href="#lifestyle">
+            <span class="gateway__num">03</span>
+            <div class="gateway__watermark">LIFE</div>
+            <div class="gateway__content">
+                <p class="gateway__label">Pablo Lifestyle</p>
+                <h2 class="gateway__title">LIFESTYLE</h2>
+                <p class="gateway__desc">Clothing. Rolling papers. Trays. Accessories. The full Pablo experience, no regulations required.</p>
+                <span class="gateway__cta">Coming 2026</span>
+            </div>
+        </a>
+    </section>
+
+    <div class="marquee">
+        <div class="marquee__track">
+            <span>All Glass. All Gas.</span>
+            <span>Fresh Frozen</span>
+            <span>7 Flavors</span>
+            <span>True-to-Plant</span>
+            <span>All Glass. All Gas.</span>
+            <span>Fresh Frozen</span>
+            <span>7 Flavors</span>
+            <span>True-to-Plant</span>
+        </div>
+    </div>
+
+    <section class="flavors">
+        <p class="flavors__label">The Menu</p>
+        <h2 class="flavors__heading">Seven <span class="text--yellow">Flavors.</span></h2>
+        <div class="flavors-stack">
+            <div class="flavor-band flavor-band--pineapple-marker">
+                <span class="flavor-band__name">Pineapple Marker</span>
+                <span class="flavor-band__type">Sativa Hybrid</span>
+            </div>
+            <div class="flavor-band flavor-band--sunday-grape">
+                <span class="flavor-band__name">Sunday Grape</span>
+                <span class="flavor-band__type">Indica Hybrid</span>
+            </div>
+            <div class="flavor-band flavor-band--terp-taxi">
+                <span class="flavor-band__name">Terp Taxi</span>
+                <span class="flavor-band__type">Sativa</span>
+            </div>
+            <div class="flavor-band flavor-band--mangonada">
+                <span class="flavor-band__name">Mangonada</span>
+                <span class="flavor-band__type">Sativa Hybrid</span>
+            </div>
+            <div class="flavor-band flavor-band--marmalade">
+                <span class="flavor-band__name">Marmalade</span>
+                <span class="flavor-band__type">Hybrid</span>
+            </div>
+            <div class="flavor-band flavor-band--watermelon-gusher">
+                <span class="flavor-band__name">Watermelon Gusher</span>
+                <span class="flavor-band__type">Indica</span>
+            </div>
+            <div class="flavor-band flavor-band--pie-face">
+                <span class="flavor-band__name">Pie Face</span>
+                <span class="flavor-band__type">Indica Hybrid</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="standard">
+        <p class="standard__label">The Standard</p>
+        <p class="standard__text">Pablo is a multi-category brand built on one principle: every product we touch gets the same treatment. Fresh-frozen extraction. Premium hardware. Obsessive quality control. Whether it ships under federal hemp law or through a licensed dispensary in New York, the standard never changes.</p>
+    </section>
+
+    <section class="features">
+        <div class="features__grid">
+            <div class="feature">
+                <h3>TerpSafe</h3>
+                <p>All-glass tank preserves every terpene</p>
+            </div>
+            <div class="feature">
+                <h3>Fresh Frozen</h3>
+                <p>Flash frozen at harvest for peak potency</p>
+            </div>
+            <div class="feature">
+                <h3>Lab Tested</h3>
+                <p>Third party tested for quality, purity &amp; safety</p>
+            </div>
+            <div class="feature">
+                <h3>No Clog</h3>
+                <p>Never-fail hardware, every time</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <p class="contact__label">Get In Touch</p>
+        <h2 class="contact__heading">Find <span class="text--yellow">Pablo</span></h2>
+        <p class="contact__body">Available at select licensed dispensaries across New York. Want to stock Pablo or have questions? We'd love to hear from you.</p>
+        <a href="mailto:info@pablobrands.com" class="contact__btn">Contact Us</a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <span class="footer__logo-text">PABLO</span>
+                <p class="footer__tagline">Fresh Frozen Cannabis</p>
+            </div>
+            <div class="footer__links">
+                <a href="https://buypablo.com" target="_blank" rel="noopener">buypablo.com</a>
+                <a href="mailto:info@pablobrands.com">Contact</a>
+            </div>
+            <div class="footer__legal">
+                <p>For use only by persons 21 years of age and older.</p>
+                <p>PABLO &middot; New York, NY</p>
+                <p>&copy; 2026 PABLO. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ── Age Gate ── */
+        const ageGate = document.getElementById('ageGate');
+        const ageYes = document.getElementById('ageYes');
+        const ageNo = document.getElementById('ageNo');
+
+        if (localStorage.getItem('pablo_age_verified')) {
+            ageGate.classList.add('age-gate--hidden');
+            document.body.style.overflow = '';
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
+
+        ageYes.addEventListener('click', () => {
+            localStorage.setItem('pablo_age_verified', 'true');
+            ageGate.classList.add('age-gate--hidden');
+            document.body.style.overflow = '';
+            /* Trigger club popup after delay */
+            if (!sessionStorage.getItem('pablo_club_shown')) {
+                setTimeout(showClub, 8000);
+            }
+        });
+
+        ageNo.addEventListener('click', () => {
+            window.location.href = 'https://google.com';
+        });
+
+        /* ── Join the Club ── */
+        const clubPopup = document.getElementById('clubPopup');
+        const clubClose = document.getElementById('clubClose');
+        const clubForm = document.getElementById('clubForm');
+        const clubSuccess = document.getElementById('clubSuccess');
+
+        function showClub() {
+            if (sessionStorage.getItem('pablo_club_shown')) return;
+            sessionStorage.setItem('pablo_club_shown', 'true');
+            clubPopup.classList.add('club--visible');
+        }
+
+        clubClose.addEventListener('click', () => {
+            clubPopup.classList.remove('club--visible');
+            setTimeout(() => clubPopup.classList.add('club--hidden'), 500);
+        });
+
+        clubForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const email = clubForm.querySelector('input').value;
+            /* Store locally — connect to real backend later */
+            const signups = JSON.parse(localStorage.getItem('pablo_signups') || '[]');
+            signups.push({ email, date: new Date().toISOString() });
+            localStorage.setItem('pablo_signups', JSON.stringify(signups));
+            clubForm.style.display = 'none';
+            clubSuccess.style.display = 'block';
+            setTimeout(() => {
+                clubPopup.classList.remove('club--visible');
+                setTimeout(() => clubPopup.classList.add('club--hidden'), 500);
+            }, 2500);
+        });
+
+        /* If already verified, schedule popup on scroll instead */
+        if (localStorage.getItem('pablo_age_verified') && !sessionStorage.getItem('pablo_club_shown')) {
+            let clubTriggered = false;
+            window.addEventListener('scroll', () => {
+                if (!clubTriggered && window.scrollY > window.innerHeight * 0.6) {
+                    clubTriggered = true;
+                    showClub();
+                }
+            }, { passive: true });
+        }
+
+        /* Nav scroll */
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+        }, { passive: true });
+
+        /* Mobile menu */
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('nav__menu--open');
+            mobileMenu.classList.toggle('mobile-menu--open');
+        });
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                menuBtn.classList.remove('nav__menu--open');
+                mobileMenu.classList.remove('mobile-menu--open');
+            });
+        });
+
+        /* Smooth scroll */
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (href === '#' || href === '#lifestyle') return;
+                e.preventDefault();
+                document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        /* Scroll-triggered animations */
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    /* Flavor bands are children — trigger them when parent enters */
+                    entry.target.querySelectorAll('.flavor-band').forEach(band => {
+                        band.classList.add('visible');
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+        document.querySelectorAll(
+            '.flavors-stack, .standard__label, .standard__text, .feature, ' +
+            '.contact__label, .contact__heading, .contact__body, .contact__btn'
+        ).forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

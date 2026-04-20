@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PABLO — Products</title>
+    <meta name="description" content="Fresh-frozen live resin vapes and seven signature flavors. All-glass ceramic hardware, NY-grown, lab tested.">
+    <meta name="theme-color" content="#0047BB">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #0047BB;
+            --blue-deep: #001A4D;
+            --yellow: #FDDA00;
+            --white: #FFFFFF;
+            --dark: #0A0A0A;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+            /* Pablo Flavor Spectrum */
+            --pineapple: #EE3680;
+            --grape: #81288E;
+            --taxi: #FDAA00;
+            --watermelon: #E80029;
+            --marmalade: #FCA311;
+            --mangonada: #FDB829;
+            --pie-face: #189849;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            background: var(--dark);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── NAV ── */
+        .nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: background 0.4s ease, padding 0.3s ease;
+        }
+        .nav--scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 3rem;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .nav__logo { height: 36px; width: auto; }
+        .nav__links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav__link {
+            font-size: 1.2rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .nav__link:hover { color: var(--white); }
+        .nav__link--back {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.65rem; letter-spacing: 0.15em;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+        }
+        .nav__link--back:hover {
+            border-color: var(--yellow); color: var(--yellow);
+        }
+
+        /* Mobile menu */
+        .nav__menu {
+            display: none; flex-direction: column; gap: 6px;
+            background: none; border: none; cursor: pointer;
+            padding: 10px; min-width: 44px; min-height: 44px;
+            justify-content: center; align-items: center;
+        }
+        .nav__menu span {
+            display: block; width: 26px; height: 2px;
+            background: var(--white); transition: all 0.3s;
+        }
+        .nav__menu--open span:first-child { transform: rotate(45deg) translate(3px, 3px); }
+        .nav__menu--open span:last-child { transform: rotate(-45deg) translate(3px, -3px); }
+        .mobile-nav {
+            display: none; position: fixed; inset: 0; z-index: 99;
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+        }
+        .mobile-nav--open { display: flex; }
+        .mobile-nav a {
+            font-size: 2rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--white); text-decoration: none; transition: color 0.3s;
+        }
+        .mobile-nav a:hover { color: var(--yellow); }
+
+        /* ── HERO — RAINBOW GRADIENT ── */
+        .hero {
+            min-height: 100vh; position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            justify-content: flex-end; align-items: center;
+            text-align: center; padding: 0 3rem 5rem;
+        }
+        .hero__bg {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                135deg,
+                #189849 0%,
+                #22C55E 8%,
+                #FDAA00 18%,
+                #FDB829 26%,
+                #FCA311 34%,
+                #EE3680 46%,
+                #E80029 56%,
+                #81288E 68%,
+                #0047BB 82%,
+                #001A4D 100%
+            );
+            animation: gradientShift 12s ease-in-out infinite alternate;
+            background-size: 200% 200%;
+        }
+        /* Dark overlay so text reads */
+        .hero__overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.35) 0%,
+                rgba(0, 0, 0, 0.15) 40%,
+                rgba(0, 0, 0, 0.5) 100%
+            );
+        }
+        .hero__content { position: relative; z-index: 2; width: 100%; }
+        .hero__sup {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); margin-bottom: 1.5rem;
+            opacity: 0; animation: fadeIn 0.8s ease 0.3s forwards;
+        }
+        .hero__title {
+            font-size: clamp(4rem, 12vw, 10rem); line-height: 0.88;
+            letter-spacing: 0.02em;
+        }
+        .hero__title .word {
+            display: block;
+            opacity: 0; transform: translateY(100%) skewY(2deg);
+            animation: wordIn 1.2s var(--ease) forwards;
+        }
+        .hero__title .word:nth-child(2) { animation-delay: 0.12s; }
+        .hero__sub {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); margin-top: 1.5rem;
+            opacity: 0; animation: fadeIn 0.8s ease 0.8s forwards;
+        }
+        .hero__scroll {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            opacity: 0; animation: fadeIn 0.6s ease 1.4s forwards;
+        }
+        .hero__scroll span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+        .hero__scroll-line {
+            width: 1px; height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+            animation: pulse 2.4s ease-in-out infinite;
+        }
+
+        /* ── RAINBOW DIVIDER ── */
+        .rainbow-bar {
+            height: 5px; width: 100%;
+            background: linear-gradient(90deg,
+                var(--pie-face) 0%,
+                var(--taxi) 14%,
+                var(--mangonada) 28%,
+                var(--marmalade) 42%,
+                var(--watermelon) 56%,
+                var(--pineapple) 70%,
+                var(--grape) 84%,
+                var(--blue) 100%
+            );
+        }
+
+        /* ── PRODUCT LINES ── */
+        .lines {
+            padding: 6rem 3rem;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .lines__header {
+            text-align: center; margin-bottom: 4rem;
+        }
+        .lines__label {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase;
+            color: var(--yellow); margin-bottom: 1rem;
+            opacity: 0; transform: translateY(20px);
+        }
+        .lines__label.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease); }
+        .lines__title {
+            font-size: clamp(2.5rem, 5vw, 4rem); line-height: 0.95;
+            opacity: 0; transform: translateY(30px);
+        }
+        .lines__title.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease) 0.1s; }
+
+        .lines__grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 4px; background: var(--white);
+            padding: 4px;
+        }
+        .line-card {
+            position: relative; overflow: hidden;
+            padding: 4rem 3rem;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            min-height: 420px;
+            text-decoration: none; color: var(--white);
+            transition: transform 0.5s var(--ease);
+        }
+        .line-card:hover { transform: scale(1.01); z-index: 2; }
+        .line-card--resin {
+            background: linear-gradient(160deg, var(--blue) 0%, var(--blue-deep) 100%);
+        }
+        .line-card--flavors {
+            background: linear-gradient(160deg,
+                var(--pineapple) 0%, var(--watermelon) 30%,
+                var(--marmalade) 60%, var(--taxi) 100%
+            );
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease-in-out infinite alternate;
+        }
+        .line-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+        }
+        .line-card__watermark {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(6rem, 14vw, 12rem);
+            letter-spacing: 0.06em; white-space: nowrap;
+            color: rgba(255,255,255,0.04);
+            pointer-events: none;
+            transition: color 0.5s ease;
+        }
+        .line-card:hover .line-card__watermark { color: rgba(255,255,255,0.07); }
+        .line-card__content { position: relative; z-index: 2; }
+        .line-card__tag {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); margin-bottom: 0.5rem;
+        }
+        .line-card__name {
+            font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 0.95;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+        .line-card__desc {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.9rem; line-height: 1.7;
+            color: rgba(255,255,255,0.65); max-width: 360px;
+        }
+        .line-card__formats {
+            display: flex; gap: 0.8rem; margin-top: 1.2rem;
+        }
+        .line-card__format {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 0.4rem 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.6);
+            transition: all 0.3s ease;
+        }
+        .line-card:hover .line-card__format {
+            border-color: rgba(255,255,255,0.4); color: var(--white);
+        }
+
+        /* ── FLAVORS SPECTRUM ── */
+        .flavors {
+            padding: 0 0 6rem;
+        }
+        .flavors__header {
+            text-align: center; padding: 6rem 3rem 3rem;
+        }
+        .flavors__label {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase;
+            color: var(--yellow); margin-bottom: 1rem;
+            opacity: 0; transform: translateY(20px);
+        }
+        .flavors__label.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease); }
+        .flavors__title {
+            font-size: clamp(2.5rem, 5vw, 4rem); line-height: 0.95;
+            opacity: 0; transform: translateY(30px);
+        }
+        .flavors__title.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease) 0.1s; }
+
+        /* Full-bleed flavor strip */
+        .flavor-strip {
+            display: flex; width: 100%; min-height: 55vh;
+        }
+        .flavor {
+            flex: 1; position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            justify-content: flex-end; align-items: center;
+            padding: 2.5rem 1rem; text-align: center;
+            cursor: default;
+            transition: flex 0.6s var(--ease);
+        }
+        .flavor-strip:hover .flavor { flex: 0.7; }
+        .flavor:hover { flex: 2.2; }
+
+        .flavor::before {
+            content: ''; position: absolute; inset: 0;
+            background: rgba(0,0,0,0.15);
+            transition: background 0.5s ease;
+        }
+        .flavor:hover::before { background: rgba(0,0,0,0.02); }
+
+        .flavor__watermark {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            font-size: 10rem; letter-spacing: 0.08em;
+            white-space: nowrap; color: rgba(255,255,255,0.03);
+            pointer-events: none;
+            transition: color 0.5s ease, font-size 0.6s var(--ease);
+        }
+        .flavor:hover .flavor__watermark {
+            color: rgba(255,255,255,0.06);
+            font-size: 12rem;
+        }
+
+        .flavor__content {
+            position: relative; z-index: 2;
+            opacity: 0.7;
+            transition: opacity 0.4s ease, transform 0.4s var(--ease);
+        }
+        .flavor:hover .flavor__content {
+            opacity: 1; transform: translateY(-6px);
+        }
+        .flavor__name {
+            font-size: 1.6rem; letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            margin-bottom: 0.3rem;
+        }
+        .flavor__class {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            opacity: 0; max-height: 0; overflow: hidden;
+            transition: opacity 0.4s ease 0.1s, max-height 0.3s ease;
+        }
+        .flavor:hover .flavor__class {
+            opacity: 1; max-height: 30px;
+        }
+        /* Detail that appears on hover */
+        .flavor__detail {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.7rem; line-height: 1.5;
+            color: rgba(255,255,255,0.55);
+            max-width: 200px; margin-top: 0.8rem;
+            opacity: 0; max-height: 0; overflow: hidden;
+            transform: translateY(8px);
+            transition: opacity 0.4s ease 0.15s, max-height 0.4s ease, transform 0.4s var(--ease) 0.15s;
+        }
+        .flavor:hover .flavor__detail {
+            opacity: 1; max-height: 100px; transform: translateY(0);
+        }
+
+        /* Individual flavor colors */
+        .flavor--pineapple { background: linear-gradient(170deg, #F05098 0%, var(--pineapple) 50%, #C02A66 100%); }
+        .flavor--grape { background: linear-gradient(170deg, #9B38A8 0%, var(--grape) 50%, #5A1866 100%); }
+        .flavor--taxi { background: linear-gradient(170deg, #FFB820 0%, var(--taxi) 50%, #D48A00 100%); }
+        .flavor--watermelon { background: linear-gradient(170deg, #FF2040 0%, var(--watermelon) 50%, #B8001E 100%); }
+        .flavor--marmalade { background: linear-gradient(170deg, #FFBA30 0%, var(--marmalade) 50%, #D48808 100%); }
+        .flavor--mangonada { background: linear-gradient(170deg, #FFC840 0%, var(--mangonada) 50%, #D49A18 100%); }
+        .flavor--pie-face { background: linear-gradient(170deg, #28D468 0%, var(--pie-face) 50%, #0E6830 100%); }
+
+        /* ── SPECS STRIP ── */
+        .specs {
+            background: var(--white); color: var(--dark);
+            padding: 5rem 3rem;
+        }
+        .specs__grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 3rem; max-width: 1100px; margin: 0 auto;
+            text-align: center;
+        }
+        .spec {
+            opacity: 0; transform: translateY(40px);
+        }
+        .spec.visible {
+            opacity: 1; transform: translateY(0);
+            transition: all 0.8s var(--ease);
+        }
+        .spec:nth-child(1) { transition-delay: 0s; }
+        .spec:nth-child(2) { transition-delay: 0.08s; }
+        .spec:nth-child(3) { transition-delay: 0.16s; }
+        .spec:nth-child(4) { transition-delay: 0.24s; }
+        .spec__icon {
+            font-size: 2.8rem; margin-bottom: 0.8rem;
+            display: block;
+        }
+        .spec h3 {
+            font-size: 1.8rem; letter-spacing: 0.06em;
+            color: var(--blue); margin-bottom: 0.4rem;
+        }
+        .spec p {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.9rem; line-height: 1.6; color: #555;
+        }
+
+        /* ── CTA ── */
+        .cta {
+            background: var(--blue); padding: 6rem 3rem;
+            text-align: center; position: relative;
+        }
+        .cta::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 5px;
+            background: linear-gradient(90deg,
+                var(--pie-face) 0%, var(--taxi) 14%, var(--mangonada) 28%,
+                var(--marmalade) 42%, var(--watermelon) 56%, var(--pineapple) 70%,
+                var(--grape) 84%, var(--blue) 100%
+            );
+        }
+        .cta__label {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--yellow); margin-bottom: 1rem;
+            opacity: 0; transform: translateY(20px);
+        }
+        .cta__label.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease); }
+        .cta__heading {
+            font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;
+            margin-bottom: 1.5rem;
+            opacity: 0; transform: translateY(30px);
+        }
+        .cta__heading.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease) 0.1s; }
+        .cta__heading .text--yellow { color: var(--yellow); }
+        .cta__body {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 1.1rem; line-height: 1.7; color: rgba(255,255,255,0.6);
+            max-width: 480px; margin: 0 auto 2rem;
+            opacity: 0; transform: translateY(20px);
+        }
+        .cta__body.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease) 0.2s; }
+        .cta__btn {
+            display: inline-block;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem; letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 0.9rem 3rem;
+            background: var(--yellow); color: var(--blue);
+            text-decoration: none; border: none;
+            transition: all 0.3s ease;
+            opacity: 0; transform: translateY(15px);
+        }
+        .cta__btn.visible { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease) 0.3s, background 0.3s ease; }
+        .cta__btn:hover { background: var(--white); }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: var(--dark); padding: 2.5rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .footer__brand {
+            font-size: 1.5rem; letter-spacing: 0.1em; opacity: 0.3;
+        }
+        .footer__links { display: flex; gap: 1.5rem; }
+        .footer__link {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 400;
+            font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+            color: rgba(255,255,255,0.2); text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer__link:hover { color: rgba(255,255,255,0.5); }
+        .footer__copy {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.6rem; color: rgba(255,255,255,0.12);
+        }
+
+        /* ── KEYFRAMES ── */
+        @keyframes wordIn { to { opacity: 1; transform: translateY(0) skewY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.25; transform: scaleY(1); }
+            50% { opacity: 0.7; transform: scaleY(1.1); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .nav__links { display: none; }
+            .nav__menu { display: flex; }
+            .specs__grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 968px) {
+            .nav { padding: 1.2rem 2rem; }
+            .lines__grid { grid-template-columns: 1fr; }
+            .line-card { min-height: 340px; }
+            .flavor-strip { flex-direction: column; min-height: auto; }
+            .flavor { min-height: 22vh; padding: 2rem 1.5rem; }
+            .flavor-strip:hover .flavor { flex: 1; }
+            .flavor:hover { flex: 1.8; }
+            .flavor__watermark { font-size: 6rem; transform: translate(-50%, -50%); }
+            .flavor:hover .flavor__watermark { font-size: 7rem; }
+            .flavor__content { opacity: 1; }
+            .flavor__class { opacity: 1; max-height: 30px; }
+            .footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+        @media (max-width: 600px) {
+            .hero { padding: 0 2rem 4rem; }
+            .hero__title { font-size: clamp(3rem, 16vw, 5rem); }
+            .lines { padding: 4rem 1.5rem; }
+            .line-card { padding: 3rem 2rem; min-height: 280px; }
+            .flavors__header { padding: 4rem 1.5rem 2rem; }
+            .specs { padding: 3.5rem 1.5rem; }
+            .specs__grid { grid-template-columns: 1fr; gap: 2rem; }
+            .cta { padding: 4rem 1.5rem; }
+            .footer { padding: 2rem 1.5rem; }
+        }
+
+        /* ── REDUCED MOTION ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .hero__title .word { opacity: 1; transform: none; }
+            .hero__sup, .hero__sub, .hero__scroll { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav" id="nav">
+        <a href="index.html">
+            <img src="assets/images/pablo-logo.svg" alt="PABLO" class="nav__logo">
+        </a>
+        <div class="nav__links">
+            <a href="#flavors" class="nav__link">Flavors</a>
+            <a href="#specs" class="nav__link">Specs</a>
+            <a href="index.html" class="nav__link nav__link--back">Back to Brands</a>
+        </div>
+        <button class="nav__menu" id="menuBtn" aria-label="Menu">
+            <span></span><span></span>
+        </button>
+    </nav>
+
+    <div id="mobileNav" class="mobile-nav">
+        <a href="#flavors">Flavors</a>
+        <a href="#specs">Specs</a>
+        <a href="index.html">Brands</a>
+        <a href="mailto:info@pablobrands.com">Contact</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero__bg"></div>
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <p class="hero__sup">Pablo Product Collection</p>
+            <h1 class="hero__title">
+                <span class="word">All Glass.</span>
+                <span class="word">All Gas.</span>
+            </h1>
+            <p class="hero__sub">Fresh-Frozen Live Resin &middot; Seven Signature Flavors</p>
+        </div>
+        <div class="hero__scroll">
+            <span>Explore</span>
+            <div class="hero__scroll-line"></div>
+        </div>
+    </section>
+
+    <div class="rainbow-bar"></div>
+
+    <section class="lines" id="lines">
+        <div class="lines__header">
+            <p class="lines__label">Two Lines</p>
+            <h2 class="lines__title">LIVE RESIN + FLAVORS</h2>
+        </div>
+        <div class="lines__grid">
+            <div class="line-card line-card--resin">
+                <div class="line-card__watermark">RESIN</div>
+                <div class="line-card__content">
+                    <p class="line-card__tag">Product Line 01</p>
+                    <h3 class="line-card__name">LIVE RESIN</h3>
+                    <p class="line-card__desc">Pure fresh-frozen cannabis extract. Single-source, strain-specific, nothing added. The plant at its absolute peak.</p>
+                    <div class="line-card__formats">
+                        <span class="line-card__format">All-in-One</span>
+                        <span class="line-card__format">510 Cart</span>
+                    </div>
+                </div>
+            </div>
+            <div class="line-card line-card--flavors">
+                <div class="line-card__watermark">FLAVORS</div>
+                <div class="line-card__content">
+                    <p class="line-card__tag">Product Line 02</p>
+                    <h3 class="line-card__name">FLAVORS</h3>
+                    <p class="line-card__desc">Seven signature flavors. Cannabis terpenes blended with precision for a flavor-forward, high-potency experience.</p>
+                    <div class="line-card__formats">
+                        <span class="line-card__format">All-in-One</span>
+                        <span class="line-card__format">510 Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flavors" id="flavors">
+        <div class="flavors__header">
+            <p class="flavors__label">The Spectrum</p>
+            <h2 class="flavors__title">SEVEN FLAVORS</h2>
+        </div>
+        <div class="flavor-strip">
+            <div class="flavor flavor--pie-face">
+                <div class="flavor__watermark">PIE</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Pie Face</h3>
+                    <p class="flavor__class">Indica Hybrid</p>
+                    <p class="flavor__detail">Rich, doughy, dessert-forward. A heavy hitter with a smooth finish.</p>
+                </div>
+            </div>
+            <div class="flavor flavor--taxi">
+                <div class="flavor__watermark">TAXI</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Terp Taxi</h3>
+                    <p class="flavor__class">Sativa</p>
+                    <p class="flavor__detail">Bright citrus, fast-acting energy. Your ride to the top of the day.</p>
+                </div>
+            </div>
+            <div class="flavor flavor--mangonada">
+                <div class="flavor__watermark">MANGO</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Mangonada</h3>
+                    <p class="flavor__class">Sativa Hybrid</p>
+                    <p class="flavor__detail">Sweet mango with a spicy chili twist. Tropical heat on every pull.</p>
+                </div>
+            </div>
+            <div class="flavor flavor--marmalade">
+                <div class="flavor__watermark">MARM</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Marmalade</h3>
+                    <p class="flavor__class">Hybrid</p>
+                    <p class="flavor__detail">Candied citrus peel, balanced and smooth. The all-day, any-occasion flavor.</p>
+                </div>
+            </div>
+            <div class="flavor flavor--watermelon">
+                <div class="flavor__watermark">GUSH</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Watermelon Gusher</h3>
+                    <p class="flavor__class">Indica</p>
+                    <p class="flavor__detail">Juicy watermelon candy. Sweet, heavy, full shutdown.</p>
+                </div>
+            </div>
+            <div class="flavor flavor--pineapple">
+                <div class="flavor__watermark">PINE</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Pineapple Marker</h3>
+                    <p class="flavor__class">Sativa Hybrid</p>
+                    <p class="flavor__detail">Sharp tropical punch with marker-sweet finish. Unforgettable.</p>
+                </div>
+            </div>
+            <div class="flavor flavor--grape">
+                <div class="flavor__watermark">GRAPE</div>
+                <div class="flavor__content">
+                    <h3 class="flavor__name">Sunday Grape</h3>
+                    <p class="flavor__class">Indica Hybrid</p>
+                    <p class="flavor__detail">Deep grape, wine-dark and velvety. Sunday evening in a vape.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="specs" id="specs">
+        <div class="specs__grid">
+            <div class="spec">
+                <span class="spec__icon">&#9670;</span>
+                <h3>TerpSafe</h3>
+                <p>All-glass tank preserves every terpene from flower to vapor</p>
+            </div>
+            <div class="spec">
+                <span class="spec__icon">&#10052;</span>
+                <h3>Fresh Frozen</h3>
+                <p>Flash frozen at harvest for peak potency and true-to-plant flavor</p>
+            </div>
+            <div class="spec">
+                <span class="spec__icon">&#9879;</span>
+                <h3>Lab Tested</h3>
+                <p>Third-party tested for potency, purity, and safety on every batch</p>
+            </div>
+            <div class="spec">
+                <span class="spec__icon">&#8734;</span>
+                <h3>No Clog</h3>
+                <p>Ceramic heating, engineered airflow. Never-fail hardware, every time</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <p class="cta__label">Wholesale</p>
+        <h2 class="cta__heading">Stock <span class="text--yellow">Pablo</span></h2>
+        <p class="cta__body">Looking to carry Pablo in your dispensary or shop? Let's talk samples, pricing, and placement.</p>
+        <a href="mailto:info@pablobrands.com" class="cta__btn">Get In Touch</a>
+    </section>
+
+    <footer class="footer">
+        <span class="footer__brand">PABLO</span>
+        <div class="footer__links">
+            <a href="index.html" class="footer__link">Brands</a>
+            <a href="https://buypablo.com" class="footer__link" target="_blank" rel="noopener">buypablo.com</a>
+            <a href="mailto:info@pablobrands.com" class="footer__link">Contact</a>
+        </div>
+        <span class="footer__copy">&copy; 2026 PABLO. All rights reserved.</span>
+    </footer>
+
+    <script>
+        /* Nav scroll */
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+        }, { passive: true });
+
+        /* Mobile menu */
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('nav__menu--open');
+            mobileNav.classList.toggle('mobile-nav--open');
+        });
+        mobileNav.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                menuBtn.classList.remove('nav__menu--open');
+                mobileNav.classList.remove('mobile-nav--open');
+            });
+        });
+
+        /* Smooth scroll */
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        /* Scroll-triggered animations */
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+        document.querySelectorAll(
+            '.lines__label, .lines__title, .flavors__label, .flavors__title, ' +
+            '.spec, .cta__label, .cta__heading, .cta__body, .cta__btn'
+        ).forEach(el => obs.observe(el));
+    </script>
+
+</body>
+</html>
